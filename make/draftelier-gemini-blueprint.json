@@ -1,0 +1,272 @@
+{
+  "name": "Draftelier · Gemini Image Rendering",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "__REPLACE_WITH_YOUR_HOOK_ID__",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": {
+          "parameters": {
+            "hook": {
+              "label": "Draftelier Webhook",
+              "data": { "editable": "true" }
+            }
+          }
+        },
+        "parameters": [
+          { "name": "hook", "type": "hook:gateway-webhook", "label": "Webhook", "required": true },
+          { "name": "maxResults", "type": "number", "label": "Max results" }
+        ],
+        "interface": [
+          { "name": "image_base64", "type": "text", "label": "Image (base64, no prefix)" },
+          { "name": "mime_type", "type": "text", "label": "MIME type (image/jpeg or image/png)" },
+          { "name": "style_prompt", "type": "text", "label": "Style prompt" },
+          { "name": "model", "type": "text", "label": "Primary model id" },
+          { "name": "fallback_model", "type": "text", "label": "Fallback model id" }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "handleErrors": true,
+        "useNewZLibDeCompress": true
+      },
+      "mapper": {
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/{{1.model}}:generateContent?key={{$env.GEMINI_API_KEY}}",
+        "method": "post",
+        "headers": [
+          { "name": "Content-Type", "value": "application/json" },
+          { "name": "x-goog-api-key", "value": "__REPLACE_WITH_YOUR_GEMINI_API_KEY__" }
+        ],
+        "qs": [],
+        "bodyType": "raw",
+        "parseResponse": true,
+        "authUser": "",
+        "authPass": "",
+        "timeout": "120",
+        "shareCookies": false,
+        "ca": "",
+        "rejectUnauthorized": true,
+        "followRedirect": true,
+        "useQuerystring": false,
+        "gzip": true,
+        "useMtls": false,
+        "contentType": "application/json",
+        "data": "{\n  \"contents\": [\n    {\n      \"role\": \"user\",\n      \"parts\": [\n        { \"inline_data\": { \"mime_type\": \"{{1.mime_type}}\", \"data\": \"{{1.image_base64}}\" } },\n        { \"text\": \"{{replace(1.style_prompt; \"\\\"\"; \"\\\\\\\"\")}}\" }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"responseModalities\": [\"IMAGE\"],\n    \"temperature\": 0.7\n  }\n}",
+        "followAllRedirects": false
+      },
+      "metadata": {
+        "designer": { "x": 300, "y": 0 },
+        "restore": {
+          "expect": {
+            "method": { "mode": "chose", "label": "POST" },
+            "headers": { "mode": "chose", "items": [{}, {}] },
+            "qs": { "mode": "chose" },
+            "bodyType": { "label": "Raw" },
+            "contentType": { "label": "JSON (application/json)" }
+          }
+        },
+        "parameters": [
+          { "name": "handleErrors", "type": "boolean", "label": "Evaluate all states as errors" },
+          { "name": "useNewZLibDeCompress", "type": "boolean", "label": "Use new zlib" }
+        ],
+        "expect": [
+          { "name": "url", "type": "url", "label": "URL", "required": true },
+          { "name": "method", "type": "select", "label": "Method" },
+          { "name": "headers", "type": "array", "label": "Headers" },
+          { "name": "qs", "type": "array", "label": "Query String" },
+          { "name": "bodyType", "type": "select", "label": "Body type" },
+          { "name": "contentType", "type": "select", "label": "Content type" },
+          { "name": "data", "type": "buffer", "label": "Request content" },
+          { "name": "timeout", "type": "uinteger", "label": "Timeout" },
+          { "name": "parseResponse", "type": "boolean", "label": "Parse response" }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "mapper": null,
+      "metadata": { "designer": { "x": 600, "y": 0 } },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 4,
+              "module": "util:SetVariables",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "variables": [
+                  {
+                    "name": "image_b64",
+                    "value": "{{2.data.candidates[].content.parts[].inline_data.data}}"
+                  },
+                  {
+                    "name": "used_model",
+                    "value": "{{1.model}}"
+                  }
+                ],
+                "scope": "roundtrip"
+              },
+              "metadata": {
+                "designer": { "x": 900, "y": -150 },
+                "restore": {
+                  "parameters": { "scope": { "label": "One cycle" } },
+                  "mapper": {
+                    "variables": {
+                      "items": [
+                        { "name": { "label": "image_b64" }, "value": { "label": "image_b64" } },
+                        { "name": { "label": "used_model" }, "value": { "label": "used_model" } }
+                      ]
+                    }
+                  }
+                },
+                "parameters": [
+                  { "name": "scope", "type": "select", "label": "Variable lifetime", "required": true, "validate": { "enum": ["roundtrip", "execution"] } }
+                ],
+                "expect": [
+                  {
+                    "name": "variables",
+                    "type": "array",
+                    "label": "Variables",
+                    "spec": [
+                      { "name": "name", "type": "text", "label": "Name", "required": true },
+                      { "name": "value", "type": "any", "label": "Value" }
+                    ]
+                  }
+                ]
+              },
+              "filter": {
+                "name": "success-path",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{length(2.data.candidates[].content.parts[].inline_data.data)}}",
+                      "o": "number:greater",
+                      "b": "0"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "id": 5,
+              "module": "gateway:WebhookRespond",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "status": "200",
+                "body": "{\n  \"ok\": true,\n  \"model\": \"{{4.used_model}}\",\n  \"image_base64\": \"{{4.image_b64}}\"\n}",
+                "headers": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" }
+                ]
+              },
+              "metadata": {
+                "designer": { "x": 1200, "y": -150 },
+                "restore": {
+                  "parameters": {},
+                  "expect": { "headers": { "mode": "chose", "items": [{}, {}] } }
+                },
+                "parameters": [],
+                "expect": [
+                  { "name": "status", "type": "uinteger", "label": "Status", "required": true },
+                  { "name": "body", "type": "any", "label": "Body" },
+                  { "name": "headers", "type": "array", "label": "Custom headers" }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 6,
+              "module": "http:ActionSendData",
+              "version": 3,
+              "parameters": { "handleErrors": true, "useNewZLibDeCompress": true },
+              "mapper": {
+                "url": "https://generativelanguage.googleapis.com/v1beta/models/{{1.fallback_model}}:generateContent",
+                "method": "post",
+                "headers": [
+                  { "name": "Content-Type", "value": "application/json" },
+                  { "name": "x-goog-api-key", "value": "__REPLACE_WITH_YOUR_GEMINI_API_KEY__" }
+                ],
+                "bodyType": "raw",
+                "parseResponse": true,
+                "contentType": "application/json",
+                "timeout": "120",
+                "data": "{\n  \"contents\": [{\n    \"role\": \"user\",\n    \"parts\": [\n      { \"inline_data\": { \"mime_type\": \"{{1.mime_type}}\", \"data\": \"{{1.image_base64}}\" } },\n      { \"text\": \"{{replace(1.style_prompt; \"\\\"\"; \"\\\\\\\"\")}}\" }\n    ]\n  }],\n  \"generationConfig\": { \"responseModalities\": [\"IMAGE\"], \"temperature\": 0.7 }\n}"
+              },
+              "metadata": { "designer": { "x": 900, "y": 150 } },
+              "filter": {
+                "name": "fallback-path",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{length(2.data.candidates[].content.parts[].inline_data.data)}}",
+                      "o": "number:equal",
+                      "b": "0"
+                    }
+                  ]
+                ]
+              }
+            },
+            {
+              "id": 7,
+              "module": "gateway:WebhookRespond",
+              "version": 1,
+              "parameters": {},
+              "mapper": {
+                "status": "200",
+                "body": "{\n  \"ok\": true,\n  \"model\": \"{{1.fallback_model}}\",\n  \"image_base64\": \"{{6.data.candidates[].content.parts[].inline_data.data}}\"\n}",
+                "headers": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Access-Control-Allow-Origin", "value": "*" }
+                ]
+              },
+              "metadata": { "designer": { "x": 1200, "y": 150 } }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": { "orphans": [] },
+    "zone": "us2.make.com",
+    "notes": [
+      "IMPORT STEPS:",
+      "1. us2.make.com → Scenarios → Create new scenario → ••• menu → Import Blueprint → pick this file.",
+      "2. Click the first module (Webhook) → Add → Name it 'Draftelier' → Save. Copy the generated URL.",
+      "3. Click the HTTP modules (id 2 AND id 6) → replace 'x-goog-api-key' header value with your real Gemini API key (AIzaSy...).",
+      "4. Turn the scenario ON (toggle at bottom-left).",
+      "5. Paste the webhook URL into assets/app.js constant MAKE_WEBHOOK_URL."
+    ]
+  }
+}

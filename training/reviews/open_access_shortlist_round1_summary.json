@@ -1,0 +1,183 @@
+{
+  "generated_by": "build_open_access_shortlist.py",
+  "master_row_count": 281,
+  "top_row_count": 128,
+  "styles": {
+    "architectural_volume": {
+      "total_candidates": 20,
+      "owner_matches": 2,
+      "core_train": 2,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Costume Design",
+        "Costume Design",
+        "Costume Design for \"Orlando\""
+      ]
+    },
+    "artisanal_deconstruction": {
+      "total_candidates": 17,
+      "owner_matches": 4,
+      "core_train": 1,
+      "style_support": 1,
+      "top_pick_titles": [
+        "Figure in a Fur Trimmed Jacket",
+        "Portrait of a Young Woman Wearing a Cloak and Bonnet",
+        "Design for a Part of a Painted Vaulted Ceiling with a Coat of Arms in Form of a Cross"
+      ]
+    },
+    "baroque_narrative": {
+      "total_candidates": 16,
+      "owner_matches": 4,
+      "core_train": 4,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Costume Design for \"Orlando\"",
+        "Costume Design for \"Adam\"",
+        "Design for Man's \"Medieval\" Costume"
+      ]
+    },
+    "bionic_couture": {
+      "total_candidates": 20,
+      "owner_matches": 4,
+      "core_train": 2,
+      "style_support": 1,
+      "top_pick_titles": [
+        "Fashion Study: Woman in a Green Dress",
+        "Study of a Woman’s Dress for a Portrait",
+        "Figure in Roman Dress (Publius Cornelius Scipio Africanus) and Study of Two Helmets (recto); Sketches and Latin Inscription (verso)"
+      ]
+    },
+    "corset_cabaret": {
+      "total_candidates": 17,
+      "owner_matches": 1,
+      "core_train": 1,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Two Costume Designs for the Ballet or Opera",
+        "Costume Design for Lady with a Fan",
+        "Costume Design for \"Adam\""
+      ]
+    },
+    "gothic_theatre": {
+      "total_candidates": 17,
+      "owner_matches": 6,
+      "core_train": 4,
+      "style_support": 1,
+      "top_pick_titles": [
+        "Inuit Manner of Dress",
+        "Dancers in Ukrainian Dress",
+        "Standing Man in a Full Coat and High Hat with a Medaillon"
+      ]
+    },
+    "insect_power": {
+      "total_candidates": 18,
+      "owner_matches": 2,
+      "core_train": 0,
+      "style_support": 1,
+      "top_pick_titles": [
+        "A Kneeling Man in Fifteenth-Century Costume (recto); a small, fragmentary sketch of a recumbant boy, probably by a later hand (verso)",
+        "Nine Figures in Military Dress (from Sketchbook)",
+        "Costume Design for \"Adam\""
+      ]
+    },
+    "maximalist_romance": {
+      "total_candidates": 18,
+      "owner_matches": 4,
+      "core_train": 2,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Standing Figure in Oriental Costume",
+        "Male Actor in Ballet Costume",
+        "Actress wearing costume with floral headpiece, from the Actresses series (N668)"
+      ]
+    },
+    "metal_modular": {
+      "total_candidates": 20,
+      "owner_matches": 6,
+      "core_train": 5,
+      "style_support": 1,
+      "top_pick_titles": [
+        "Costume Design for Lady with a Fan",
+        "Two Women in Day Dresses: Preparatory drawing for a fashion plate from Le Moniteur de la Mode",
+        "Fashion Study: Two Women in Evening Dress"
+      ]
+    },
+    "minimalist_chic": {
+      "total_candidates": 13,
+      "owner_matches": 1,
+      "core_train": 1,
+      "style_support": 0,
+      "top_pick_titles": [
+        "The Fashions of the Day – or Time Past and Time Present: The Year (1740) a Lady's Full Dress of Bombazeen – The Year (1808) Lady's Undress of Bum-be-seen",
+        "Costume Design",
+        "Costume Design"
+      ]
+    },
+    "modern_croquis": {
+      "total_candidates": 20,
+      "owner_matches": 1,
+      "core_train": 0,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Portrait of Nicolas Trigault in Chinese Costume",
+        "Costume Design for \"Orlando\"",
+        "Costume Design for \"Adam\""
+      ]
+    },
+    "paris_new_look": {
+      "total_candidates": 20,
+      "owner_matches": 10,
+      "core_train": 1,
+      "style_support": 3,
+      "top_pick_titles": [
+        "Design for a theater costume",
+        "Illustration for a French fashion magazine",
+        "Fashion plate"
+      ]
+    },
+    "pleated_motion": {
+      "total_candidates": 17,
+      "owner_matches": 2,
+      "core_train": 2,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Figure in a Long Robe, Seated",
+        "Standing Figure in a Long Coat",
+        "Figure in a Fur Trimmed Jacket"
+      ]
+    },
+    "punk_rococo": {
+      "total_candidates": 15,
+      "owner_matches": 2,
+      "core_train": 0,
+      "style_support": 2,
+      "top_pick_titles": [
+        "A costume and a sketch of a man in profile",
+        "Sketch of Two Male Figures in Classical Costume",
+        "Inuit Manner of Dress"
+      ]
+    },
+    "space_age_clean": {
+      "total_candidates": 13,
+      "owner_matches": 1,
+      "core_train": 0,
+      "style_support": 1,
+      "top_pick_titles": [
+        "Over Robe (Uchikake) with Design of Bamboo Blinds, Curtain Screens, Decorative Fans, and Auspicous Motifs",
+        "Costume Design",
+        "Costume Design"
+      ]
+    },
+    "surreal_gold": {
+      "total_candidates": 20,
+      "owner_matches": 5,
+      "core_train": 4,
+      "style_support": 0,
+      "top_pick_titles": [
+        "Gallery of Fashion, vol. V: April 1, 1798 - March 1 1799",
+        "Gallery of Fashion, vol. VI: April 1 1799 - March 1 1800",
+        "Gallery of Fashion, vol. VII: April 1 1800 - March 1 1801"
+      ]
+    }
+  }
+}

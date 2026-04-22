@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 294">
+  <rect width="210" height="294" fill="#f0e8d6"/>
+  <!-- flowing drape lines -->
+  <g stroke="#1a1510" stroke-width="1.2" fill="none" stroke-linecap="round">
+    <path d="M30 20 Q70 60 55 110 Q40 160 80 200 Q110 230 95 274"/>
+    <path d="M55 18 Q95 58 80 108 Q65 158 105 198 Q135 228 120 274"/>
+    <path d="M82 16 Q118 56 103 106 Q88 156 128 196 Q158 226 143 274"/>
+    <path d="M110 16 Q142 56 127 106 Q112 156 148 196 Q175 224 162 274"/>
+    <path d="M138 16 Q165 58 150 108 Q135 158 168 198 Q190 222 180 274"/>
+    <path d="M168 16 Q186 60 174 110 Q162 162 188 202 Q204 222 200 274"/>
+  </g>
+  <!-- highlights -->
+  <g stroke="#a67a3f" stroke-width="0.7" fill="none" opacity="0.7">
+    <path d="M67 20 Q100 62 86 114 Q72 164 112 202 Q142 232 128 274"/>
+    <path d="M152 16 Q176 60 162 110 Q148 162 178 200 Q198 222 190 274"/>
+  </g>
+  <text x="105" y="288" text-anchor="middle" font-family="serif" font-size="7.5" fill="#a67a3f" letter-spacing="3">DRAPE CONSTRUCTION</text>
+</svg>

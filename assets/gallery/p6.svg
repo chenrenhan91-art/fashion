@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 294">
+  <defs>
+    <radialGradient id="sun6" cx="50%" cy="46%" r="38%">
+      <stop offset="0" stop-color="#f0d070"/>
+      <stop offset="1" stop-color="#a67a2a"/>
+    </radialGradient>
+  </defs>
+  <rect width="210" height="294" fill="#5a0f14"/>
+  <circle cx="105" cy="136" r="160" fill="#2a0608" opacity="0.5"/>
+  <!-- sun rays -->
+  <g stroke="#d4af37" stroke-width="1.4" stroke-linecap="round">
+    <line x1="105" y1="52" x2="105" y2="24"/>
+    <line x1="139" y1="62" x2="153" y2="40"/>
+    <line x1="159" y1="90" x2="181" y2="82"/>
+    <line x1="163" y1="124" x2="189" y2="124"/>
+    <line x1="153" y1="156" x2="173" y2="168"/>
+    <line x1="133" y1="180" x2="145" y2="200"/>
+    <line x1="105" y1="188" x2="105" y2="212"/>
+    <line x1="77" y1="180" x2="65" y2="200"/>
+    <line x1="57" y1="156" x2="37" y2="168"/>
+    <line x1="47" y1="124" x2="21" y2="124"/>
+    <line x1="51" y1="90" x2="29" y2="82"/>
+    <line x1="71" y1="62" x2="57" y2="40"/>
+  </g>
+  <!-- eye -->
+  <circle cx="105" cy="124" r="52" fill="url(#sun6)"/>
+  <ellipse cx="105" cy="124" rx="36" ry="20" fill="#f3e4b8"/>
+  <circle cx="105" cy="124" r="12" fill="#1a0808"/>
+  <circle cx="105" cy="124" r="5" fill="#d4af37"/>
+  <circle cx="101" cy="120" r="2" fill="#fff"/>
+  <text x="105" y="258" text-anchor="middle" font-family="serif" font-size="7.5" fill="#d4af37" letter-spacing="3">ORNAMENTAL STUDY</text>
+  <text x="105" y="286" text-anchor="middle" font-family="serif" font-size="7.5" fill="#a67a3f" letter-spacing="2.5">SCHIAPARELLI · REF</text>
+</svg>

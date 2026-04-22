@@ -1,0 +1,423 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import csv
+import json
+from pathlib import Path
+
+SOURCE_REGISTRY = {
+    "met_open_access": {
+        "name": "The Met Open Access",
+        "catalog_url": "https://www.metmuseum.org/hubs/open-access",
+        "api_url": "https://metmuseum.github.io/",
+        "rights_gate": "Only keep records with isPublicDomain=true and a downloadable primaryImage.",
+        "preferred_filters": [
+            "hasImages=true",
+            "isPublicDomain=true",
+            "objectName in [Drawing, Print, Costume design, Design] when available",
+        ],
+    },
+    "smithsonian_open_access": {
+        "name": "Smithsonian Open Access",
+        "catalog_url": "https://www.si.edu/openaccess",
+        "api_url": "https://www.si.edu/openaccess/devtools",
+        "rights_gate": "Only keep items explicitly marked CC0. Skip 'usage conditions apply' and skip non-CC0 media.",
+        "preferred_filters": [
+            "CC0 only",
+            "2D image available",
+            "Collections Search Center for advanced filtering",
+        ],
+    },
+    "nypl_public_domain": {
+        "name": "NYPL Public Domain Collections",
+        "catalog_url": "https://www.nypl.org/research/collections/digital-collections/public-domain",
+        "api_url": "https://api.repo.nypl.org/",
+        "rights_gate": "Only keep items surfaced through NYPL public-domain search or item pages that state no restrictions on use.",
+        "preferred_filters": [
+            "Public Domain only",
+            "Drawings / Costume Design Drawings / Fashion plates",
+            "High-resolution download enabled",
+        ],
+    },
+    "cooper_hewitt_open_source": {
+        "name": "Cooper Hewitt Open Source",
+        "catalog_url": "https://www.cooperhewitt.org/open-source-at-cooper-hewitt/",
+        "api_url": "https://collection.cooperhewitt.org/api",
+        "rights_gate": "Verify item-level media rights before download; keep only openly reusable records/media.",
+        "preferred_filters": [
+            "Openly reusable media only",
+            "Drawings / Prints / Design objects",
+            "Collection API or Explore the Collection search",
+        ],
+    },
+    "europeana": {
+        "name": "Europeana",
+        "catalog_url": "https://www.europeana.eu/en/themes/fashion",
+        "api_url": "https://www.europeana.eu/en/apis",
+        "rights_gate": "Keep CC0, Public Domain Mark, CC BY, or CC BY-SA only. Skip InC, InC-EDU, NoC-NC, CNE, and other restricted statements.",
+        "preferred_filters": [
+            "Media type: IMAGE",
+            "Rights in [CC0, PDM, CC BY, CC BY-SA]",
+            "Provider metadata with traceable source institution",
+        ],
+    },
+    "loc": {
+        "name": "Library of Congress",
+        "catalog_url": "https://www.loc.gov/item/2004550225/",
+        "api_url": "https://www.loc.gov/apis/",
+        "rights_gate": "Keep only items whose record says 'Rights Advisory: No known restrictions on publication' or an equivalent unrestricted rights statement.",
+        "preferred_filters": [
+            "Prints and Photographs / Fashion plate / Costume",
+            "Downloadable image available",
+            "Clear item-level Rights & Access statement",
+        ],
+    },
+}
+
+COMMON_EXCLUDE = [
+    "runway photo",
+    "editorial photo",
+    "magazine scan",
+    "celebrity",
+    "screenshot",
+    "logo",
+    "watermark",
+    "e-commerce product photo",
+]
+
+STYLE_PACKS = [
+    {
+        "style_id": "dior",
+        "training_style": "paris_new_look",
+        "display_name": "Parisian Couture",
+        "search_focus": "Poised tailored silhouettes, waisted couture balance, watercolor-soft fashion studies.",
+        "preferred_object_types": ["fashion plate", "couture illustration", "tailored outerwear sketch", "dress design drawing"],
+        "query_terms": [
+            "fashion plate tailored suit watercolor illustration",
+            "couture dress design graphite watercolor drawing",
+            "hourglass silhouette fashion illustration outerwear sketch",
+        ],
+        "preferred_sources": ["met_open_access", "nypl_public_domain", "loc", "europeana"],
+        "screening_notes": [
+            "Prefer waist emphasis, soft watercolor, polished presentation pages.",
+            "Do not ingest direct designer-name copies or house-labelled archival reproductions.",
+        ],
+    },
+    {
+        "style_id": "balenciaga",
+        "training_style": "architectural_volume",
+        "display_name": "Sculptural Elegance",
+        "search_focus": "Architectural contour, cocoon volume, restrained atelier draftsmanship.",
+        "preferred_object_types": ["costume design drawing", "architectural fashion sketch", "gouache design plate", "tailoring study"],
+        "query_terms": [
+            "costume design drawing sculptural volume",
+            "architectural silhouette fashion illustration gouache",
+            "structured coat dress design sketch graphite",
+        ],
+        "preferred_sources": ["met_open_access", "cooper_hewitt_open_source", "europeana", "nypl_public_domain"],
+        "screening_notes": [
+            "Favor clean negative space and sculpted mass over decorative surface print.",
+        ],
+    },
+    {
+        "style_id": "schiaparelli",
+        "training_style": "surreal_gold",
+        "display_name": "Surreal Ornament",
+        "search_focus": "Surreal couture ornament, sharp ink, metallic or luminous accent cues.",
+        "preferred_object_types": ["fantasy costume sketch", "surreal fashion illustration", "ornamental costume design"],
+        "query_terms": [
+            "surreal costume design drawing metallic ornament",
+            "fantasy fashion illustration ink gold accent",
+            "avant garde costume sketch surreal drawing",
+        ],
+        "preferred_sources": ["nypl_public_domain", "smithsonian_open_access", "europeana", "cooper_hewitt_open_source"],
+        "screening_notes": [
+            "Use only hand-drawn pages with surreal object logic or symbolic ornament; skip straight photographic documentation.",
+        ],
+    },
+    {
+        "style_id": "chanel",
+        "training_style": "modern_croquis",
+        "display_name": "Modern Croquis",
+        "search_focus": "Fast editorial croquis, black marker energy, unfinished fitting-room confidence.",
+        "preferred_object_types": ["croquis", "marker fashion sketch", "editorial fitting sketch", "rapid garment study"],
+        "query_terms": [
+            "quick fashion sketch marker croquis",
+            "gestural fashion illustration black marker white highlight",
+            "rapid backstage croquis editorial drawing",
+        ],
+        "preferred_sources": ["nypl_public_domain", "smithsonian_open_access", "cooper_hewitt_open_source"],
+        "screening_notes": [
+            "Keep only visibly hand-drawn sketches with rapid gesture lines; skip polished lithographic plates.",
+        ],
+    },
+    {
+        "style_id": "mugler",
+        "training_style": "insect_power",
+        "display_name": "Futurist Glamour",
+        "search_focus": "Engineered glamour, sharp shoulders, armored or insect-like couture drama.",
+        "preferred_object_types": ["futurist costume design", "science-fiction costume sketch", "armored silhouette drawing"],
+        "query_terms": [
+            "futurist costume design body armor sketch",
+            "science fiction fashion illustration insect wing silhouette",
+            "power shoulder costume design sharp contour",
+        ],
+        "preferred_sources": ["smithsonian_open_access", "europeana", "nypl_public_domain", "cooper_hewitt_open_source"],
+        "screening_notes": [
+            "Prefer angular body architecture and high-contrast linework.",
+        ],
+    },
+    {
+        "style_id": "galliano",
+        "training_style": "baroque_narrative",
+        "display_name": "Baroque Narrative",
+        "search_focus": "Lavish storytelling, romantic movement, ornamented theatrical costume pages.",
+        "preferred_object_types": ["baroque costume design", "romantic fashion illustration", "theatrical watercolor sketch"],
+        "query_terms": [
+            "baroque costume design watercolor ornate sketch",
+            "romantic theatrical costume drawing embellished gown",
+            "historical fantasy costume design illustration",
+        ],
+        "preferred_sources": ["nypl_public_domain", "europeana", "smithsonian_open_access", "met_open_access"],
+        "screening_notes": [
+            "Favor pages with visible embellishment notes, layered washes, and narrative costume styling.",
+        ],
+    },
+    {
+        "style_id": "gaultier",
+        "training_style": "corset_cabaret",
+        "display_name": "Corset Cabaret",
+        "search_focus": "Body-conscious line, corsetry notation, decadent stagewear and cabaret structure.",
+        "preferred_object_types": ["corset costume sketch", "cabaret costume design", "bodice study drawing"],
+        "query_terms": [
+            "corset costume design drawing cabaret stage",
+            "structured bodice performance costume sketch",
+            "lingerie inspired costume contour drawing",
+        ],
+        "preferred_sources": ["nypl_public_domain", "europeana", "smithsonian_open_access"],
+        "screening_notes": [
+            "Prefer seam and boning readability; avoid pin-up photography masquerading as sketches.",
+        ],
+    },
+    {
+        "style_id": "westwood",
+        "training_style": "punk_rococo",
+        "display_name": "Punk Aristocracy",
+        "search_focus": "Historic costume disruption, anarchic linework, rococo volume cut with rebellious attitude.",
+        "preferred_object_types": ["historical costume sketch", "punk costume collage drawing", "rococo costume design"],
+        "query_terms": [
+            "punk costume design collage sketch historical dress",
+            "rococo costume drawing rebellious styling",
+            "deconstructed historical fashion illustration ink",
+        ],
+        "preferred_sources": ["nypl_public_domain", "europeana", "loc", "smithsonian_open_access"],
+        "screening_notes": [
+            "Keep asymmetry, tartan-like blocking, and disruptive drape cues where legally reusable.",
+        ],
+    },
+    {
+        "style_id": "maison_margiela",
+        "training_style": "artisanal_deconstruction",
+        "display_name": "Deconstructed Modern",
+        "search_focus": "Faint graphite residue, construction marks, pattern-study minimalism, erased edges.",
+        "preferred_object_types": ["pattern study", "garment construction drawing", "minimal fashion sketch", "atelier draft page"],
+        "query_terms": [
+            "pattern study fashion sketch unfinished graphite",
+            "garment construction drawing deconstructed tailoring",
+            "minimal fashion study erased graphite seams",
+        ],
+        "preferred_sources": ["cooper_hewitt_open_source", "smithsonian_open_access", "met_open_access", "europeana"],
+        "screening_notes": [
+            "Prefer process pages, seam studies, and pattern annotations over finished glamorous illustrations.",
+        ],
+    },
+    {
+        "style_id": "iris_van_herpen",
+        "training_style": "bionic_couture",
+        "display_name": "Bionic Motion",
+        "search_focus": "Biomechanical geometry, wireframe line, technical pen precision, kinetic structure.",
+        "preferred_object_types": ["technical fashion drawing", "wireframe costume sketch", "geometric dress study"],
+        "query_terms": [
+            "biomorphic costume design wireframe drawing",
+            "geometric fashion illustration technical pen",
+            "futuristic dress design lattice sketch",
+        ],
+        "preferred_sources": ["smithsonian_open_access", "cooper_hewitt_open_source", "europeana"],
+        "screening_notes": [
+            "Look for lattice, biomorphic shell, and technical-grid qualities.",
+        ],
+    },
+    {
+        "style_id": "issey_miyake",
+        "training_style": "pleated_motion",
+        "display_name": "Pleated Velocity",
+        "search_focus": "Pleat logic, fold studies, origami motion, airy sculptural movement.",
+        "preferred_object_types": ["pleat study", "fold diagram", "origami garment sketch", "movement drawing"],
+        "query_terms": [
+            "pleated garment design study origami sketch",
+            "fold study fashion drawing movement",
+            "pleat structure costume design illustration",
+        ],
+        "preferred_sources": ["cooper_hewitt_open_source", "smithsonian_open_access", "met_open_access", "europeana"],
+        "screening_notes": [
+            "Prefer visible fold systems and motion marks; skip flat catalog renderings.",
+        ],
+    },
+    {
+        "style_id": "courreges",
+        "training_style": "space_age_clean",
+        "display_name": "Space Age Precision",
+        "search_focus": "Clean mod geometry, optical white space, crisp futuristic 1960s drafting.",
+        "preferred_object_types": ["mod fashion plate", "space-age costume drawing", "geometric silhouette sketch"],
+        "query_terms": [
+            "mod fashion drawing geometric dress sketch",
+            "space age costume design clean line",
+            "1960s futuristic fashion plate geometric silhouette",
+        ],
+        "preferred_sources": ["met_open_access", "loc", "nypl_public_domain", "europeana"],
+        "screening_notes": [
+            "Keep hard-edged geometry and white-ground clarity; avoid noisy painterly treatments.",
+        ],
+    },
+    {
+        "style_id": "rabanne",
+        "training_style": "metal_modular",
+        "display_name": "Metallic Modularism",
+        "search_focus": "Modular panel logic, metallic reflection cues, industrial couture assembly.",
+        "preferred_object_types": ["modular costume sketch", "metal dress illustration", "industrial fashion drawing"],
+        "query_terms": [
+            "metallic costume design modular dress sketch",
+            "disc dress chainmail fashion illustration",
+            "industrial couture drawing reflective panels",
+        ],
+        "preferred_sources": ["smithsonian_open_access", "cooper_hewitt_open_source", "europeana", "nypl_public_domain"],
+        "screening_notes": [
+            "Favor repeated units, disc or panel construction, and reflective media notes.",
+        ],
+    },
+    {
+        "style_id": "gucci",
+        "training_style": "maximalist_romance",
+        "display_name": "Romantic Maximalism",
+        "search_focus": "Layered color, eccentric ornament, retro romantic abundance, expressive page fullness.",
+        "preferred_object_types": ["ornamental fashion illustration", "floral costume sketch", "layered color drawing"],
+        "query_terms": [
+            "ornamental fashion illustration layered color sketch",
+            "eclectic costume design floral pattern drawing",
+            "maximalist dress sketch saturated watercolor",
+        ],
+        "preferred_sources": ["met_open_access", "europeana", "nypl_public_domain", "smithsonian_open_access"],
+        "screening_notes": [
+            "Prefer rich palette, decorative print notation, and whimsical accessory rhythms drawn on paper.",
+        ],
+    },
+    {
+        "style_id": "mcqueen",
+        "training_style": "gothic_theatre",
+        "display_name": "Dark Poise",
+        "search_focus": "Smudged charcoal drama, razor contour, gothic elegance and theatrical tension.",
+        "preferred_object_types": ["gothic costume design", "charcoal fashion sketch", "dark theatrical drawing"],
+        "query_terms": [
+            "gothic costume design charcoal fashion sketch",
+            "dramatic black fashion illustration sharp silhouette",
+            "dark romantic costume drawing smudged charcoal",
+        ],
+        "preferred_sources": ["nypl_public_domain", "smithsonian_open_access", "europeana", "met_open_access"],
+        "screening_notes": [
+            "Use only hand-drawn dark studies; skip photographed garments on mannequins.",
+        ],
+    },
+    {
+        "style_id": "ysl",
+        "training_style": "minimalist_chic",
+        "display_name": "Minimal Precision",
+        "search_focus": "Sparse black ink, sleek tailoring, elegant negative space, tuxedo-like line economy.",
+        "preferred_object_types": ["minimal fashion sketch", "tailoring illustration", "ink suit study"],
+        "query_terms": [
+            "minimal fashion sketch tuxedo tailoring",
+            "sleek tailoring illustration black ink negative space",
+            "precise fashion drawing suit silhouette",
+        ],
+        "preferred_sources": ["met_open_access", "cooper_hewitt_open_source", "nypl_public_domain", "loc"],
+        "screening_notes": [
+            "Keep crisp line economy and formal tailoring clarity; avoid decorative overload.",
+        ],
+    },
+]
+
+GLOBAL_SCREENING_NOTES = [
+    "Only ingest self-owned, licensed, public-domain, CC0, CC BY, or CC BY-SA imagery that is clearly reusable for training.",
+    "Do not ingest runway photographs, magazine scans, celebrity/editorial images, screenshots, or third-party brand boards without explicit rights.",
+    "For Smithsonian, keep CC0 only; for Europeana, skip In Copyright and No Copyright-Non Commercial statements; for NYPL, keep public-domain items only.",
+    "If a collection description warns that images may be straight copies of named couture designers, treat it as high-risk and keep it out of the auto-training set.",
+    "Prefer full-page hand-drawn studies on paper with visible line, wash, marker, or construction notation.",
+]
+
+CSV_FIELDS = [
+    "style_id",
+    "training_style",
+    "display_name",
+    "search_focus",
+    "preferred_object_types",
+    "query_terms",
+    "exclude_terms",
+    "preferred_sources",
+    "source_links",
+    "rights_gates",
+    "screening_notes",
+]
+
+
+def render_csv_row(style: dict) -> dict[str, str]:
+    sources = [SOURCE_REGISTRY[key] for key in style["preferred_sources"]]
+    return {
+        "style_id": style["style_id"],
+        "training_style": style["training_style"],
+        "display_name": style["display_name"],
+        "search_focus": style["search_focus"],
+        "preferred_object_types": " | ".join(style["preferred_object_types"]),
+        "query_terms": " | ".join(style["query_terms"]),
+        "exclude_terms": " | ".join(COMMON_EXCLUDE),
+        "preferred_sources": " | ".join(source["name"] for source in sources),
+        "source_links": " | ".join(source["catalog_url"] for source in sources),
+        "rights_gates": " | ".join(source["rights_gate"] for source in sources),
+        "screening_notes": " | ".join(style["screening_notes"]),
+    }
+
+
+def render_json_payload() -> dict:
+    return {
+        "generated_by": "training/scripts/export_open_access_search_manifest.py",
+        "global_screening_notes": GLOBAL_SCREENING_NOTES,
+        "common_exclude_terms": COMMON_EXCLUDE,
+        "source_registry": SOURCE_REGISTRY,
+        "style_packs": STYLE_PACKS,
+    }
+
+
+def main() -> None:
+    root_dir = Path(__file__).resolve().parents[2]
+    output_dir = root_dir / "training" / "manifests"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    json_path = output_dir / "open_access_style_search_manifest.json"
+    csv_path = output_dir / "open_access_style_search_manifest.csv"
+
+    json_path.write_text(
+        json.dumps(render_json_payload(), ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS)
+        writer.writeheader()
+        for style in STYLE_PACKS:
+            writer.writerow(render_csv_row(style))
+
+    print(f"Wrote {json_path}")
+    print(f"Wrote {csv_path}")
+
+
+if __name__ == "__main__":
+    main()

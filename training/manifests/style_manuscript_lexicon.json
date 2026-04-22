@@ -1,0 +1,103 @@
+{
+  "title": "Draftelier Designer Manuscript Lexicon",
+  "subtitle": "Hand-drawn reinforcement trigger words for style-specific LoRA training",
+  "version": "2026-03-31",
+  "styles": [
+    {
+      "id": "dior",
+      "repo_style_id": "dior",
+      "token": "paris_new_look",
+      "manuscript_trigger_words": "vintage fashion croquis, original designer sketch, delicate graphite pencil construction lines, translucent soft watercolor wash, unfinished paper edges, 1950s haute couture manuscript, sweeping hourglass curves"
+    },
+    {
+      "id": "balenciaga",
+      "repo_style_id": "balenciaga",
+      "token": "architectural_volume",
+      "manuscript_trigger_words": "architectural fashion sketch, original atelier manuscript, cool precise graphite contour lines, restrained flat gouache wash, visible proportion lines, clean white paper background, minimalist structural tailoring cues"
+    },
+    {
+      "id": "schiaparelli",
+      "repo_style_id": "schiaparelli",
+      "token": "surreal_gold",
+      "manuscript_trigger_words": "avant-garde fashion illustration, eccentric designer sketch, sharp aggressive black India ink, striking luminous metallic gold leaf accents, surreal croquis, rough art paper, trompe l'oeil drafting details"
+    },
+    {
+      "id": "chanel",
+      "repo_style_id": "chanel",
+      "token": "modern_croquis",
+      "manuscript_trigger_words": "fast backstage fashion sketch, rapid thick black marker strokes, pastel smudges, dynamic white correction-fluid (Tipp-Ex) highlights, messy spontaneous croquis, designer's notebook page"
+    },
+    {
+      "id": "mugler",
+      "repo_style_id": "mugler",
+      "token": "insect_power",
+      "manuscript_trigger_words": "sci-fi fashion croquis, sharp fineliner pen sketch, glossy reflective marker highlights, hyper-exaggerated hourglass proportions, dramatic runway manuscript, engineered structural detail, sharp technical drawing"
+    },
+    {
+      "id": "galliano",
+      "repo_style_id": "galliano",
+      "token": "baroque_narrative",
+      "manuscript_trigger_words": "chaotic romantic fashion sketch, expressive swirling ink linework, lavish opulent watercolor layering, embellished historical dressmaking annotations, artist's sketchbook page, theatrical manuscript"
+    },
+    {
+      "id": "gaultier",
+      "repo_style_id": "gaultier",
+      "token": "corset_cabaret",
+      "manuscript_trigger_words": "cabaret fashion croquis, precise tattoo-like black contour lines, intricate ballpoint pen corsetry seam notation, body-conscious sketch, subversive atelier manuscript, ballpoint pen draft"
+    },
+    {
+      "id": "westwood",
+      "repo_style_id": "westwood",
+      "token": "punk_rococo",
+      "manuscript_trigger_words": "rebellious punk fashion sketch, anarchic biro ballpoint pen scratches, sketchy ink lines, collage-like color blocking, rough DIY croquis, torn paper aesthetic, subverted tailoring draft"
+    },
+    {
+      "id": "maison_margiela",
+      "repo_style_id": "maison_margiela",
+      "token": "artisanal_deconstruction",
+      "manuscript_trigger_words": "deconstructed fashion manuscript, ghostly faint graphite outlines, deliberately erased construction marks, visible basting stitches, grayscale xerox-like paper texture, anonymous pattern-study sketch"
+    },
+    {
+      "id": "iris_van_herpen",
+      "repo_style_id": "iris_van_herpen",
+      "token": "bionic_couture",
+      "manuscript_trigger_words": "bionic fashion draft, kinetic wireframe grids, meticulous ultra-fine technical drafting pen lines, 3D parametric geometry, clean blueprint-like sketch page, techno-couture manuscript"
+    },
+    {
+      "id": "issey_miyake",
+      "repo_style_id": "issey_miyake",
+      "token": "pleated_motion",
+      "manuscript_trigger_words": "fluid fashion croquis, airy sweeping graphite lines, precise micro-pleat notation, complex origami fold logic, translucent watercolor wash, minimal manuscript, weightless fabric sketch"
+    },
+    {
+      "id": "courreges",
+      "repo_style_id": "courreges",
+      "token": "space_age_clean",
+      "manuscript_trigger_words": "space-age fashion sketch, ruler-straight geometric ink lines, minimal flat vector-like marker wash, immaculate A-line geometry, 1960s mod-futurist drafting on smooth paper"
+    },
+    {
+      "id": "rabanne",
+      "repo_style_id": "rabanne",
+      "token": "metal_modular",
+      "manuscript_trigger_words": "industrial fashion manuscript, sharp reflective ink edges, shimmering metallic marker shading, precise chainmail modular assembly notes, hard-edged croquis, technical hardware draft"
+    },
+    {
+      "id": "gucci",
+      "repo_style_id": "gucci",
+      "token": "maximalist_romance",
+      "manuscript_trigger_words": "maximalist fashion illustration, heavily layered colored pencils, saturated watercolors, expressive doodle-like strokes, quirky 70s retro croquis, vintage sketchbook page"
+    },
+    {
+      "id": "mcqueen",
+      "repo_style_id": "mcqueen",
+      "token": "gothic_theatre",
+      "manuscript_trigger_words": "macabre gothic fashion sketch, heavily smudged emotional charcoal, razor-sharp aggressive graphite scratchings, profound dark romanticism manuscript, raw artist croquis, dark paper texture"
+    },
+    {
+      "id": "ysl",
+      "repo_style_id": "ysl",
+      "token": "minimalist_chic",
+      "manuscript_trigger_words": "minimalist fashion sketch, extraordinarily sparse precise black ink outlines, flat bold marker color blocking, sleek Le Smoking tailoring, elegant negative space, sophisticated Parisian croquis"
+    }
+  ]
+}

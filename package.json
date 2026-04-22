@@ -1,0 +1,42 @@
+{
+  "name": "fashionmarker-ai",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "sync:training-manifests": "node scripts/sync-training-manifests.mjs",
+    "build": "npm run sync:training-manifests && vite build",
+    "build:static": "vite build --base=./",
+    "build:cloudflare": "npm run sync:training-manifests && vite build",
+    "build:github-pages": "npm run sync:training-manifests && GITHUB_PAGES=true VITE_API_BASE_URL=https://fashion-atelier-ai.pages.dev vite build",
+    "deploy:cloudflare": "npm run build:cloudflare && wrangler pages deploy dist --project-name fashion-atelier-ai --commit-dirty=true",
+    "publish:github-pages": "npm run build:github-pages && rm -rf docs && cp -R dist docs && touch docs/.nojekyll",
+    "serve:lora": "PYTHONPATH=. python3 -m services.lora_inference.app",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "bootstrap-training-dataset": "node scripts/bootstrap-training-dataset.mjs",
+    "prepare-lora-dataset": "python3 training/scripts/prepare_lora_dataset.py",
+    "build-reference-curation-sheet": "python3 training/scripts/build_reference_curation_sheet.py",
+    "run-style-lora-pipeline": "python3 training/scripts/run_style_lora_pipeline.py"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "@use-gesture/react": "^10.3.1",
+    "lucide-react": "^0.546.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "vite": "^7.1.11",
+    "wrangler": "^4.75.0"
+  }
+}

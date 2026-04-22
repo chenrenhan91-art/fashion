@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="sun" cx="50%" cy="40%" r="40%">
+      <stop offset="0" stop-color="#ffe08a"/>
+      <stop offset="1" stop-color="#c18a1f"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="#5e1218"/>
+  <circle cx="450" cy="520" r="510" fill="#260709" opacity="0.5"/>
+  <g transform="translate(450 500)">
+    <g stroke="#d8ad42" stroke-width="8" stroke-linecap="round">
+      <line x1="0" y1="-255" x2="0" y2="-340"/>
+      <line x1="180" y1="-180" x2="242" y2="-242"/>
+      <line x1="255" y1="0" x2="340" y2="0"/>
+      <line x1="180" y1="180" x2="242" y2="242"/>
+      <line x1="0" y1="255" x2="0" y2="340"/>
+      <line x1="-180" y1="180" x2="-242" y2="242"/>
+      <line x1="-255" y1="0" x2="-340" y2="0"/>
+      <line x1="-180" y1="-180" x2="-242" y2="-242"/>
+    </g>
+    <circle r="228" fill="url(#sun)"/>
+    <ellipse cx="0" cy="0" rx="156" ry="86" fill="#f5e6bc"/>
+    <circle r="56" fill="#1c0b0b"/>
+    <circle r="22" fill="#d8ad42"/>
+    <circle cx="-10" cy="-10" r="8" fill="#fff"/>
+  </g>
+  <g fill="#d8ad42" opacity="0.9">
+    <path d="M120 190 l18 44 l46 8 l-36 30 l12 46 l-40 -24 l-40 24 l12 -46 l-36 -30 l46 -8 z"/>
+    <path d="M760 980 l14 36 l38 6 l-30 24 l10 38 l-32 -20 l-32 20 l10 -38 l-30 -24 l38 -6 z"/>
+    <path d="M140 1010 l12 30 l32 5 l-24 20 l8 32 l-28 -17 l-28 17 l8 -32 l-24 -20 l32 -5 z"/>
+  </g>
+  <path d="M0 1080 Q240 1048 450 1082 Q660 1048 900 1080 L900 1200 L0 1200 Z" fill="#2a0708"/>
+</svg>

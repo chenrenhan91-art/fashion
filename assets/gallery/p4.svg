@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 294">
+  <rect width="210" height="294" fill="#f0e8d6"/>
+  <!-- diagonal stripe swatch -->
+  <clipPath id="clip4"><rect width="210" height="294"/></clipPath>
+  <g clip-path="url(#clip4)">
+    <!-- wide dark stripes -->
+    <g fill="#1a1510" opacity="0.85">
+      <polygon points="-20,0 22,0 -40,294 -82,294"/>
+      <polygon points="28,0 70,0 8,294 -34,294"/>
+      <polygon points="118,0 138,0 76,294 56,294"/>
+      <polygon points="172,0 192,0 130,294 110,294"/>
+      <polygon points="226,0 246,0 184,294 164,294"/>
+    </g>
+    <!-- thin gold accent stripes -->
+    <g fill="#a67a3f" opacity="0.7">
+      <polygon points="94,0 102,0 40,294 32,294"/>
+      <polygon points="148,0 156,0 94,294 86,294"/>
+      <polygon points="202,0 210,0 148,294 140,294"/>
+    </g>
+    <!-- cream gaps (paper tone) -->
+  </g>
+  <text x="105" y="288" text-anchor="middle" font-family="serif" font-size="7.5" fill="#a67a3f" letter-spacing="3">SURFACE &amp; TEXTURE</text>
+</svg>

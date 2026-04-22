@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f1c33"/>
+      <stop offset="1" stop-color="#070a12"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#79b7db" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#79b7db" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#bg)"/>
+  <rect width="900" height="1200" fill="url(#glow)"/>
+  <g fill="none" stroke="#d5e7f4" stroke-width="2" opacity="0.78">
+    <path d="M-40 100 Q210 34 450 100 T940 100"/>
+    <path d="M-40 170 Q210 104 450 170 T940 170" opacity="0.65"/>
+    <path d="M-40 240 Q210 174 450 240 T940 240"/>
+    <path d="M-40 310 Q210 244 450 310 T940 310" opacity="0.55"/>
+    <path d="M-40 380 Q210 314 450 380 T940 380"/>
+    <path d="M-40 450 Q210 384 450 450 T940 450" opacity="0.6"/>
+    <path d="M-40 520 Q210 454 450 520 T940 520"/>
+    <path d="M-40 590 Q210 524 450 590 T940 590" opacity="0.62"/>
+    <path d="M-40 660 Q210 594 450 660 T940 660"/>
+    <path d="M-40 730 Q210 664 450 730 T940 730" opacity="0.58"/>
+    <path d="M-40 800 Q210 734 450 800 T940 800"/>
+    <path d="M-40 870 Q210 804 450 870 T940 870" opacity="0.6"/>
+  </g>
+  <line x1="450" y1="0" x2="450" y2="1200" stroke="#ccb07a" stroke-width="2" opacity="0.6"/>
+  <circle cx="450" cy="600" r="190" fill="none" stroke="#e6f3fb" stroke-width="3" opacity="0.9"/>
+  <circle cx="450" cy="600" r="120" fill="none" stroke="#ccb07a" stroke-width="2" opacity="0.95"/>
+  <circle cx="450" cy="600" r="24" fill="#e6f3fb"/>
+  <g stroke="#e6f3fb" stroke-width="3" opacity="0.8">
+    <line x1="160" y1="600" x2="220" y2="600"/>
+    <line x1="680" y1="600" x2="740" y2="600"/>
+    <line x1="450" y1="320" x2="450" y2="380"/>
+    <line x1="450" y1="820" x2="450" y2="880"/>
+  </g>
+</svg>

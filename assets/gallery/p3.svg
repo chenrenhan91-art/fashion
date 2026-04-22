@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 294">
+  <rect width="210" height="294" fill="#f4efe3"/>
+  <!-- geometric collar construction -->
+  <g stroke="#0b0b0b" stroke-width="1" fill="none">
+    <!-- collar arch -->
+    <path d="M42 100 Q105 38 168 100"/>
+    <path d="M55 106 Q105 52 155 106"/>
+    <!-- lapels -->
+    <path d="M42 100 L28 160 L88 148 L105 200 L122 148 L182 160 L168 100"/>
+    <!-- neckline V -->
+    <path d="M88 148 Q105 170 122 148"/>
+    <!-- construction lines -->
+    <line x1="105" y1="38" x2="105" y2="200" stroke="#a67a3f" stroke-width="0.6" stroke-dasharray="4,3"/>
+    <line x1="28" y1="130" x2="182" y2="130" stroke="#a67a3f" stroke-width="0.6" stroke-dasharray="4,3"/>
+  </g>
+  <!-- measurement marks -->
+  <g stroke="#0b0b0b" stroke-width="0.8">
+    <line x1="100" y1="38" x2="110" y2="38"/>
+    <line x1="100" y1="200" x2="110" y2="200"/>
+    <line x1="28" y1="125" x2="28" y2="135"/>
+    <line x1="182" y1="125" x2="182" y2="135"/>
+  </g>
+  <text x="105" y="230" text-anchor="middle" font-family="monospace" font-size="7" fill="#1a1510" letter-spacing="2">NECKLINE — 01</text>
+  <text x="105" y="288" text-anchor="middle" font-family="serif" font-size="7.5" fill="#a67a3f" letter-spacing="3">NECKLINE ARCHIVE</text>
+</svg>

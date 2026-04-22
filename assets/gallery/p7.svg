@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 294">
+  <rect width="210" height="294" fill="#f2eadb"/>
+  <!-- tailoring/seam construction -->
+  <g stroke="#0b0b0b" stroke-width="1" fill="none" stroke-linecap="round">
+    <!-- jacket silhouette -->
+    <path d="M55 60 L38 70 L26 110 L26 220 L184 220 L184 110 L172 70 L155 60"/>
+    <!-- centre seam -->
+    <line x1="105" y1="60" x2="105" y2="220" stroke-dasharray="5,3" stroke-width="0.7"/>
+    <!-- lapel left -->
+    <path d="M55 60 L82 90 L82 120 L55 108"/>
+    <!-- lapel right -->
+    <path d="M155 60 L128 90 L128 120 L155 108"/>
+    <!-- shoulders -->
+    <path d="M55 60 Q45 50 38 70"/>
+    <path d="M155 60 Q165 50 172 70"/>
+    <!-- sleeve left -->
+    <path d="M38 70 L20 72 L14 160 L42 162 L38 70"/>
+    <!-- sleeve right -->
+    <path d="M172 70 L190 72 L196 160 L168 162 L172 70"/>
+    <!-- waist seam -->
+    <line x1="26" y1="158" x2="184" y2="158"/>
+    <!-- dart marks -->
+    <path d="M88 120 L92 158 M122 120 L118 158"/>
+  </g>
+  <!-- notch labels -->
+  <g fill="#a67a3f" font-family="monospace" font-size="6.5">
+    <text x="108" y="90">CF</text>
+    <text x="30" y="155">SL</text>
+    <text x="170" y="155">SL</text>
+  </g>
+  <text x="105" y="244" text-anchor="middle" font-family="monospace" font-size="7" fill="#1a1510" letter-spacing="2">ATELIER PATTERN · 07</text>
+  <text x="105" y="288" text-anchor="middle" font-family="serif" font-size="7.5" fill="#a67a3f" letter-spacing="3">ATELIER REFERENCE</text>
+</svg>
