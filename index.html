@@ -134,6 +134,20 @@
               <button id="download-poster" class="text-btn" hidden data-i18n="atelier.download">下载 PNG ↓</button>
             </div>
           </div>
+
+          <!-- Gemini API Key row -->
+          <div class="api-key-row" id="api-key-row">
+            <div class="api-key-inner">
+              <span class="api-key-label" data-i18n="apikey.label">Gemini API Key</span>
+              <input id="gemini-key-input" class="api-key-input" type="password"
+                placeholder="AIza…" autocomplete="off" spellcheck="false" />
+              <button id="gemini-key-save" class="api-key-btn" type="button" data-i18n="apikey.save">保存</button>
+              <a class="api-key-link" href="https://aistudio.google.com/app/apikey"
+                target="_blank" rel="noopener noreferrer" data-i18n="apikey.get">获取 Key ↗</a>
+            </div>
+            <span class="api-key-status" id="api-key-status"></span>
+          </div>
+
           <div id="ai-status" class="ai-status" hidden></div>
           <div class="poster-frame">
             <canvas id="poster-canvas" width="1440" height="1800"></canvas>
@@ -171,8 +185,6 @@
 
   <script src="assets/styles-data.js"></script>
   <script src="assets/gallery-config.js"></script>
-  <!-- ⬇ 把下面这行取消注释，填入你的 Gemini API Key，即可直连生图（推荐）-->
-  <!-- <script>window.DRAFTELIER_GEMINI_KEY = "AIzaSy...";</script> -->
   <script src="assets/app.js"></script>
 </body>
 </html>
